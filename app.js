@@ -296,13 +296,12 @@ async function refresh() {
   }
 
   /* FIDS */
-  const fids = await fetchFIDS();
-  updateFlightsUI(fids);
+const fids = await fetchFIDS();
 
-   // Limiter à 10 prochains vols
+// Limiter à 10 prochains vols
 function limitNextFlights(list) {
   return list
-    .filter(f => f.scheduled) // vols avec horaire
+    .filter(f => f.scheduled)
     .sort((a, b) => new Date(a.scheduled) - new Date(b.scheduled))
     .slice(0, 10);
 }
@@ -310,23 +309,8 @@ function limitNextFlights(list) {
 fids.arrivals = limitNextFlights(fids.arrivals);
 fids.departures = limitNextFlights(fids.departures);
 
-
-   function renderNextFlights(arrivals, departures) {
-  const container = document.getElementById("next-flights");
-
-  let html = "<strong>Arrivées</strong><br>";
-  arrivals.forEach(f => {
-    html += `${f.flight} — ${new Date(f.scheduled).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}<br>`;
-  });
-
-  html += "<br><strong>Départs</strong><br>";
-  departures.forEach(f => {
-    html += `${f.flight} — ${new Date(f.scheduled).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}<br>`;
-  });
-
-  container.innerHTML = html;
-}
-
+// Maintenant on peut afficher
+updateFlightsUI(fids);
 renderNextFlights(fids.arrivals, fids.departures);
 
  /* RUNWAY */
