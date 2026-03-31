@@ -308,7 +308,9 @@ function initSonometers(mapInstance) {
     `).openPopup();
 
     highlightSonometerInList(s.id);
+    showDetailPanel(s.id);
 });
+
 
 
         sonometers[s.id] = {
@@ -450,6 +452,47 @@ function updateSonoChart(g, r, y) {
     ctx.fillText("V", 35, baseY + 10);
     ctx.fillText("R", 35 + barWidth + spacing, baseY + 10);
     ctx.fillText("N", 35 + 2 * (barWidth + spacing), baseY + 10);
+}
+function showDetailPanel(id) {
+    const s = sonometers[id];
+    if (!s) return;
+
+    const panel = document.getElementById("detail-panel");
+    const title = document.getElementById("detail-title");
+    const address = document.getElementById("detail-address");
+    const town = document.getElementById("detail-town");
+    const status = document.getElementById("detail-status");
+    const distance = document.getElementById("detail-distance");
+
+    const fullAddress = SONO_ADDRESSES[id] || "Adresse inconnue";
+    const townName = fullAddress.split(",")[1] || "—";
+
+    // Distance à la piste active
+    const runway = document.getElementById("runway-panel").innerText.includes("22") ? "22" : "04";
+    const r = RUNWAYS[runway];
+    const d = haversineDistance([s.lat, s.lon], r.start).toFixed(2);
+
+    title.textContent = id;
+    address.textContent = fullAddress;
+    town.textContent = townName.trim();
+    status.textContent = s.marker.options.color.toUpperCase();
+    distance.textContent = `${d} km`;
+
+    panel.classList.remove("hidden");
+}
+
+function haversineDistance(a, b) {
+    const R = 6371;
+    const dLat = deg2rad(b[0] - a[0]);
+    const dLon = deg2rad(b[1] - a[1]);
+    const lat1 = deg2rad(a[0]);
+    const lat2 = deg2rad(b[0]);
+
+    const h = Math.sin(dLat/2)**2 +
+              Math.cos(lat1) * Math.cos(lat2) *
+              Math.sin(dLon/2)**2;
+
+    return 2 * R * Math.asin(Math.sqrt(h));
 }
 
 // ======================================================
