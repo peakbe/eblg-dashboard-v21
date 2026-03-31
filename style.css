@@ -138,29 +138,46 @@
     border-bottom: 1px solid #ddd;
     padding-bottom: 3px;
 }
+
 #sono-panel {
-    font-size: 13px;
-    padding: 8px;
+    width: 240px;
     background: #f5f5f5;
-    border-radius: 4px;
-    max-height: 300px;
-    overflow-y: auto;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 13px;
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+    max-height: 28px;
 }
 
-#sono-panel h3 {
-    margin-top: 0;
-    font-size: 14px;
+#sono-panel.expanded {
+    max-height: 500px;
+}
+
+#sono-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+#sono-toggle {
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .sono-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2px;
+    padding: 2px 0;
 }
 
 .sono-green { color: green; }
 .sono-red { color: red; }
 .sono-gray { color: #777; }
+
 
 /* ============================
    MAIN CONTENT
